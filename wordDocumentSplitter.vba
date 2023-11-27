@@ -1,20 +1,23 @@
-Sub ExtractSectionsToNewDocuments8()
+Sub ExtractSectionsToNewDocuments()
     Dim originalDoc As Document
     Set originalDoc = ActiveDocument
     
-    ' Create a new folder on the desktop
+    ' Create a new folder for the created files
     Dim folderPath As String
     folderPath = "path\to\folder"
     
     ' Check if the folder exists
     If Dir(folderPath, vbDirectory) <> "" Then
+
         ' If the folder exists, delete it
         On Error Resume Next
         Kill folderPath & "\*.*"
         RmDir folderPath
         On Error GoTo 0
+
     End If
     
+    ' Create the folder
     MkDir folderPath
     
     Dim section As section
@@ -23,15 +26,16 @@ Sub ExtractSectionsToNewDocuments8()
     
     ' Loop through each section in the original document
     For Each section In originalDoc.Sections
+
         ' Create a new document for each section
         Set newDoc = Documents.Add
         
         ' Copy the content of the section to the new document with formatting and styles
         section.Range.Copy
         newDoc.Range.Paste
-        
-        Dim oField As Field
 
+        ' remove links
+        Dim oField As Field
         For Each oField In newDoc.Fields
             If oField.Type = wdFieldHyperlink Then
                 oField.Unlink
@@ -39,7 +43,6 @@ Sub ExtractSectionsToNewDocuments8()
         Next
         
         ' Copy the "Normal" style definition from the original document to the new document
-        'newDoc.Styles.Add Name:="Normal", Type:=wdStyleTypeParagraph
         newDoc.Styles("Normal").ParagraphFormat = originalDoc.Styles("Normal").ParagraphFormat
         newDoc.Styles("Normal").Font = originalDoc.Styles("Normal").Font
         
@@ -62,5 +65,6 @@ Sub ExtractSectionsToNewDocuments8()
         
         ' Increment the section counter
         i = i + 1
+
     Next section
 End Sub
