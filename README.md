@@ -1,5 +1,5 @@
 # wordDocSplitter
-This is a word vba code that takes a word document and spit it's sections into different word documents.
+This is a word vba code that takes a word document and split it's sections into different word documents, keeping all the styles.
 
 notes:
 1. I suppose to keep all the original styles.
